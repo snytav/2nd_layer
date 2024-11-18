@@ -151,29 +151,29 @@ net_out
 psy_t = psy_trial(input_point, net_out)
 print(psy_t)
 
-loss = loss_function(x_space, y_space,pde,psy_trial,f)
-loss.backward()
+#loss = loss_function(x_space, y_space,pde,psy_trial,f)
+#loss.backward()
 print(x_space.grad)
 
-lmb = 0.001
-optimizer = torch.optim.SGD(pde.parameters(), lr=lmb)
-import time
-t1 = time.time()
-for i in range(100):
-    #print('begin ',i,loss.item())
-    optimizer.zero_grad()
-    #print('zero grad ',i,loss.item())
-    #print(x_space.device,y_space.device)
-    loss = loss_function(x_space, y_space,pde,psy_trial,f)
-    #print(loss.device)
-    print(i,loss.item())
-    loss.backward(retain_graph=True)
-    #print('loop end ',i,loss.item())
-    optimizer.step()
-
-    print('step ',i,loss.item())
-t2 = time.time()
-print('computation time ',t2-t1)
+# lmb = 0.001
+# optimizer = torch.optim.SGD(pde.parameters(), lr=lmb)
+# import time
+# t1 = time.time()
+# for i in range(100):
+#     #print('begin ',i,loss.item())
+#     optimizer.zero_grad()
+#     #print('zero grad ',i,loss.item())
+#     #print(x_space.device,y_space.device)
+#     loss = loss_function(x_space, y_space,pde,psy_trial,f)
+#     #print(loss.device)
+#     print(i,loss.item())
+#     loss.backward(retain_graph=True)
+#     #print('loop end ',i,loss.item())
+#     optimizer.step()
+#
+#     print('step ',i,loss.item())
+# t2 = time.time()
+# print('computation time ',t2-t1)
 
 surface = np.zeros((nx,ny))
 an_surface = np.zeros((nx,ny))
