@@ -363,8 +363,21 @@ net_out_all  = torch.einsum('abi,abi->ab', W1,
                                               )
 )
 
+def forward_all(w,w1,x):
+    res = torch.einsum('abi,abi->ab', w1,
+                   torch.sigmoid(
+                       torch.einsum('abij,abjk->abi', w, x)
+                   )
+                   )
+    return res
+
+
+
 net_out_all
 
 pde(XY[0][0])
 
+net_out_all = forward_all(W,W1,XY)
+
 torch.max(torch.abs(net_out_all-t_manual2))
+qq = 0
