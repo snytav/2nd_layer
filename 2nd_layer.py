@@ -151,7 +151,7 @@ net_out
 psy_t = psy_trial(input_point, net_out)
 print(psy_t)
 
-#loss = loss_function(x_space, y_space,pde,psy_trial,f)
+loss = loss_function(x_space, y_space,pde,psy_trial,f)
 #loss.backward()
 print(x_space.grad)
 
