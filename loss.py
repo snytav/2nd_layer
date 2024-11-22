@@ -43,6 +43,8 @@ def loss_function(x, y ,pde ,psy_trial ,f):
             net_out_hessian = hessian(pde.forward ,input_point ,create_graph=True)
             net_out_hessian_all.append(net_out_hessian)
             psy_t = psy_trial(input_point, net_out)
+            psy_t_all.append(psy_t)
+
 
             inputs = (input_point, net_out)
             psy_t_jacobian = jacobian(psy_trial, inputs ,create_graph=True)[0]
@@ -54,10 +56,10 @@ def loss_function(x, y ,pde ,psy_trial ,f):
             # acobian(jacobian(psy_trial))(input_point, net_out
 
             gradient_of_trial_d2x = psy_t_hessian[0][0]
-            gradient_of_trial_d2x_all.append(gradient_of_trial_d2x_all)
+            gradient_of_trial_d2x_all.append(gradient_of_trial_d2x)
 
             gradient_of_trial_d2y = psy_t_hessian[1][1]
-            gradient_of_trial_d2y_all.append(gradient_of_trial_d2y_all)
+            gradient_of_trial_d2y_all.append(gradient_of_trial_d2y)
 
             # D_gradient_of_trial_d2x_D_W0 = grad(outputs=gradient_of_trial_d2x, inputs=pde.fc1.weight, grad_outputs=torch.ones_like(gradient_of_trial_d2x), retain_graph=True)
             # D_gradient_of_trial_d2y_D_W0 = grad(outputs=gradient_of_trial_d2y, inputs=pde.fc1.weight, grad_outputs=torch.ones_like(gradient_of_trial_d2y), retain_graph=True)
@@ -78,16 +80,16 @@ def loss_function(x, y ,pde ,psy_trial ,f):
             qq = 0
 
     net_out_all = torch.tensor(net_out_all)
-    net_out_w_all = torch.tensor(net_out_w_all)
-    net_out_jacobian_all = torch.tensor(net_out_jacobian_all)
-    net_out_hessian_all = torch.tensor(net_out_hessian_all)
-    psy_t_jacobian_all = torch.tensor(psy_t_jacobian_all)
-    psy_t_hessian_all  = torch.tensor(psy_t_hessian_all)
-    gradient_of_trial_d2x_all = torch.tensor(gradient_of_trial_d2x_all)
-    gradient_of_trial_d2y_all = torch.tensor(gradient_of_trial_d2y_all)
+    net_out_w_all = torch.stack(net_out_w_all, dim=0)
+    net_out_jacobian_all = torch.stack(net_out_jacobian_all, dim=0)
+    net_out_hessian_all = torch.stack(net_out_hessian_all,dim=0)
+    psy_t_jacobian_all = torch.stack(psy_t_jacobian_all,dim=0)
+    psy_t_hessian_all  = torch.stack(psy_t_hessian_all,dim=0)
+    gradient_of_trial_d2x_all = torch.stack(gradient_of_trial_d2x_all,dim=0)
+    gradient_of_trial_d2y_all = torch.stack(gradient_of_trial_d2y_all,dim=0)
     func_all = torch.tensor(func_all)
-    func_t_all = torch.tensor(func_t_all)
-    err_sqr_all = torch.tensor(err_sqr_all)
-    psy_t_all = torch.tensor(psy_t_all)
+    func_t_all = torch.stack(func_t_all,dim=0)
+    err_sqr_all = torch.stack(err_sqr_all,dim=0)
+    psy_t_all = torch.stack(psy_t_all,dim=0)
 
     return loss_sum
