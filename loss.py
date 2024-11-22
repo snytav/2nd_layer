@@ -6,6 +6,19 @@ from torch.autograd.functional import hessian
 from torch.autograd import grad
 
 
+def reshape_to_global(nx,ny,a):
+    l = len(a.shape)
+    if l == 1:
+        a = a.reshape(nx,ny)
+        # a = a.repeat(nx, ny, 1)
+    if l == 2:
+        a = a.reshape(1,1,a.shape[0].a.shape[1])
+        a = a.repeat(nx,ny,1,1)
+    if l == 3:
+        a = a.reshape(1,1,a.shape[0].a.shape[1],a.shape[2])
+        a = a.repeat(nx,ny,1,1,1)
+    return a
+
 def loss_function(x, y ,pde ,psy_trial ,f):
     loss_sum = 0.
 
@@ -79,7 +92,10 @@ def loss_function(x, y ,pde ,psy_trial ,f):
             loss_sum += err_sqr
             qq = 0
 
+    nx = x.shape[0]
+    ny = y.shape[0]
     net_out_all = torch.tensor(net_out_all)
+    net_out_all = reshape_to_global(nx,ny,net_out_all)
     net_out_w_all = torch.stack(net_out_w_all, dim=0)
     net_out_jacobian_all = torch.stack(net_out_jacobian_all, dim=0)
     net_out_hessian_all = torch.stack(net_out_hessian_all,dim=0)
