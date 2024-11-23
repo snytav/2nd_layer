@@ -12,11 +12,14 @@ def reshape_to_global(nx,ny,a):
         a = a.reshape(nx,ny)
         # a = a.repeat(nx, ny, 1)
     if l == 2:
-        a = a.reshape(1,1,a.shape[0].a.shape[1])
-        a = a.repeat(nx,ny,1,1)
+        a = a.reshape(nx, ny)
+        # a = a.repeat(nx, ny, 1)
     if l == 3:
-        a = a.reshape(1,1,a.shape[0].a.shape[1],a.shape[2])
-        a = a.repeat(nx,ny,1,1,1)
+        b = a.reshape(1,a.shape[0],a.shape[1],a.shape[2])
+        a = b.reshape(nx,ny,a.shape[1],a.shape[2])
+    if l == 4:
+        b = a.reshape(1, a.shape[0], a.shape[1], a.shape[2], a.shape[3])
+        a = b.reshape(nx, ny, a.shape[2], a.shape[3])
     return a
 
 def loss_function(x, y ,pde ,psy_trial ,f):
@@ -97,15 +100,26 @@ def loss_function(x, y ,pde ,psy_trial ,f):
     net_out_all = torch.tensor(net_out_all)
     net_out_all = reshape_to_global(nx,ny,net_out_all)
     net_out_w_all = torch.stack(net_out_w_all, dim=0)
+    net_out_w_all = reshape_to_global(nx,ny,net_out_w_all)
     net_out_jacobian_all = torch.stack(net_out_jacobian_all, dim=0)
+    net_out_jacobian_all = reshape_to_global(nx, ny, net_out_jacobian_all)
     net_out_hessian_all = torch.stack(net_out_hessian_all,dim=0)
+    net_out_hessian_all = reshape_to_global(nx, ny, net_out_hessian_all)
     psy_t_jacobian_all = torch.stack(psy_t_jacobian_all,dim=0)
+    net_out_hessian_all = reshape_to_global(nx, ny, net_out_hessian_all)
     psy_t_hessian_all  = torch.stack(psy_t_hessian_all,dim=0)
+    psy_t_hessian_all = reshape_to_global(nx, ny,  psy_t_hessian_all)
     gradient_of_trial_d2x_all = torch.stack(gradient_of_trial_d2x_all,dim=0)
+    gradient_of_trial_d2x_all = reshape_to_global(nx, ny, gradient_of_trial_d2x_all)
     gradient_of_trial_d2y_all = torch.stack(gradient_of_trial_d2y_all,dim=0)
+    gradient_of_trial_d2y_all = reshape_to_global(nx, ny,  gradient_of_trial_d2y_all)
     func_all = torch.tensor(func_all)
+    func_all = reshape_to_global(nx,ny,func_all)
     func_t_all = torch.stack(func_t_all,dim=0)
+    func_t_all = reshape_to_global(nx,ny,func_t_all)
     err_sqr_all = torch.stack(err_sqr_all,dim=0)
+    err_sqr_all = reshape_to_global(nx,ny,err_sqr_all)
     psy_t_all = torch.stack(psy_t_all,dim=0)
+    psy_t_all = reshape_to_global(nx,ny,psy_t_all)
 
     return loss_sum
