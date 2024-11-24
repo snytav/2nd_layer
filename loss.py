@@ -6,6 +6,10 @@ from torch.autograd.functional import hessian
 from torch.autograd import grad
 
 
+
+
+
+
 def reshape_to_global(nx,ny,a):
     l = len(a.shape)
     if l == 1:
@@ -24,22 +28,18 @@ def reshape_to_global(nx,ny,a):
 
 def loss_function(x, y ,pde ,psy_trial ,f):
     loss_sum = 0.
-
-
-    net_out_all               = []
-    net_out_w_all             = []
-    net_out_jacobian_all      = []
-    net_out_hessian_all       = []
-    psy_t_jacobian_all        = []
-    psy_t_hessian_all         = []
+    net_out_all = []
+    net_out_w_all = []
+    net_out_jacobian_all = []
+    net_out_hessian_all = []
+    psy_t_jacobian_all = []
+    psy_t_hessian_all = []
     gradient_of_trial_d2x_all = []
     gradient_of_trial_d2y_all = []
-    func_all                  = []
-    func_t_all                = []
-    err_sqr_all               = []
-    psy_t_all                 = []
-
-
+    func_all = []
+    func_t_all = []
+    err_sqr_all = []
+    psy_t_all = []
 
     for xi in x:
         for yi in y:
@@ -122,4 +122,18 @@ def loss_function(x, y ,pde ,psy_trial ,f):
     psy_t_all = torch.stack(psy_t_all,dim=0)
     psy_t_all = reshape_to_global(nx,ny,psy_t_all)
 
-    return loss_sum
+    details = {"net_out_all": net_out_all,
+                 "net_out_w_all": net_out_w_all ,
+                 "net_out_jacobian_all": net_out_jacobian_all,
+                 "net_out_hessian_all":net_out_hessian_all,
+                 "psy_t_jacobian_all":psy_t_jacobian_all,
+                 "psy_t_hessian_all":psy_t_hessian_all,
+                 "gradient_of_trial_d2x_all":gradient_of_trial_d2x_all,
+                 "gradient_of_trial_d2y_all":gradient_of_trial_d2y_all,
+                 "func_all":func_all,
+                 "func_t_all":func_t_all,
+                 "err_sqr_all":err_sqr_all,
+                 "psy_t_all":psy_t_all
+                }
+
+    return loss_sum,details

@@ -19,7 +19,7 @@ from matplotlib import pyplot, cm
 from mpl_toolkits.mplot3d import Axes3D
 
 def f(x):
-    return 0.
+    return 0.0
 
 def analytic_solution(x):
     sol =  (1 / (np.exp(np.pi) - np.exp(-np.pi))) * \
@@ -110,7 +110,7 @@ print(psy_t)
 
 from loss import loss_function
 
-lf = loss_function(x_space, y_space,pde,psy_trial,f)
+lf,details = loss_function(x_space, y_space,pde,psy_trial,f)
 
 lf.backward()
 print(x_space.grad)
