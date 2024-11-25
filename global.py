@@ -15,5 +15,14 @@ X = torch.from_numpy(X)
 Y = torch.from_numpy(Y)
 XY = torch.cat((X,Y),dim=2)
 func_global = torch.tensor([f(x) for x in X for X in XY]).reshape(nx,ny)
+
+
+# start with
+f_lam = lambda x: psy_trial(x[0], x[1])
+# values of neural network at each point
+#here we redefine PDE to be global
+
+# then define tensor tt like the one in 1D
+
 qq = 0
 
