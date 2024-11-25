@@ -2,6 +2,8 @@ import torch.nn as nn
 import torch
 # нейронная сеть для решения уравнения Пуассона
 class PDE_2D_net(nn.Module):
+    def get_2D_weights(self,w0,w1):
+        
     def __init__(self,N,nx,ny):
         super(PDE_2D_net,self).__init__()
         self.N  = N
